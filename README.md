@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/shogo82148/p5-Redis-Script.png?branch=master)](https://travis-ci.org/shogo82148/p5-Redis-Script)
 # NAME
 
 Redis::Script - It's new $module
