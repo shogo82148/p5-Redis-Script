@@ -43,12 +43,15 @@
       },
       "runtime" : {
          "requires" : {
+            "Digest::SHA" : "0",
             "perl" : "5.008005"
          }
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.98"
+            "Redis" : "0",
+            "Test::More" : "0.98",
+            "Test::RedisServer" : "0"
          }
       }
    },
