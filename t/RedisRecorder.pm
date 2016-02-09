@@ -16,6 +16,8 @@ sub AUTOLOAD {
     return $self->{redis}->$sub(@_);
 }
 
+sub DESTROY {}
+
 sub record {
     my $self = shift;
     return $self->{record};
