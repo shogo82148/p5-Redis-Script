@@ -61,15 +61,38 @@ __END__
 
 =head1 NAME
 
-Redis::Script - It's new $module
+Redis::Script - wrapper class for Redis' script
 
 =head1 SYNOPSIS
 
+    use Redis;
     use Redis::Script;
+    my $script = Redis::Script->new(script => "return {KEYS[1],KEYS[2],ARGV[1],ARGV[2]}");
+    my ($key1, $key2, $arg1, $arg2) = $script->eval(Redis->new, ['key1', 'key2'], ['arg1', 'arg2']);
 
 =head1 DESCRIPTION
 
-Redis::Script is ...
+Redis::Script is wrapper class for Redis' script.
+
+
+=head1 FUNCTIONS
+
+=head2 C<< $script->eval($redis:Redis, $keys:ArrayRef, $args:ArrayRef) >>
+
+C<eval> executes the script by C<EVALSHA> command.
+If C<EVALSHA> reports "No matching script", use C<EVAL> instead of C<EVALSHA>.
+Redis will cache the script of C<EVAL> command, so C<EVALSHA> will succeed next time.
+
+If C<use_evalsha> option is false, C<eval> does not use C<EVALSHA> command.
+
+=head2 C<< $script->exists($redis:Redis) >>
+
+C<exists> reports if C<$redis> caches the script.
+
+=head2 C<< $script->load($redis:Redis) >>
+
+Load a script into the scripts cache, without executing it.
+
 
 =head1 LICENSE
 

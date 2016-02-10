@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "wrapper class for Redis' script",
    "author" : [
       "@gmail.com>"
    ],
