@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use Test::More;
 use Test::RedisServer;
-use Redis::Script;
+use Redis::Script qw/redis_eval/;
 use t::RedisRecorder;
 
 my $redis_backend = $ENV{REDIS_BACKEND} || 'Redis';
@@ -80,6 +80,11 @@ subtest 'load' => sub {
     ok !$s->exists($redis), 'the script is not cached before EVAL';
     is lc $s->load($redis), lc $script_sha1, "loading script success";
     ok $s->exists($redis), 'the script is cached after EVAL';
+};
+
+subtest 'eval' => sub {
+    $redis->script_flush;
+    is_deeply [redis_eval($redis, $script, ['key1', 'key2'], ['arg1', 'arg2'])], ['key1', 'key2', 'arg1', 'arg2'];
 };
 
 done_testing;

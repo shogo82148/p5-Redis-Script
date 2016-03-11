@@ -2,6 +2,8 @@ package Redis::Script;
 use 5.008005;
 use strict;
 use warnings;
+use Exporter 'import';
+our @EXPORT_OK = ('redis_eval');
 
 our $VERSION = "0.01";
 
@@ -54,6 +56,11 @@ sub sha1 {
     return $self->{sha} ||= sha1_hex($self->{script});
 }
 
+sub redis_eval {
+    my ($redis, $script, $keys, $args) = @_;
+    return __PACKAGE__->new(script => $script)->eval($redis, $keys, $args);
+}
+
 1;
 __END__
 
@@ -65,10 +72,15 @@ Redis::Script - wrapper class for Redis' script
 
 =head1 SYNOPSIS
 
+    # OO-interface
     use Redis;
     use Redis::Script;
     my $script = Redis::Script->new(script => "return {KEYS[1],KEYS[2],ARGV[1],ARGV[2]}");
     my ($key1, $key2, $arg1, $arg2) = $script->eval(Redis->new, ['key1', 'key2'], ['arg1', 'arg2']);
+    
+    # Functional
+    use Redis::Script qw/redis_eval/;
+    my ($key1, $key2, $arg1, $arg2) = redis_eval(Redis->new, "return {KEYS[1],KEYS[2],ARGV[1],ARGV[2]}", ['key1', 'key2'], ['arg1', 'arg2']);
 
 =head1 DESCRIPTION
 
