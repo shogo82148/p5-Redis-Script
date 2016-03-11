@@ -105,6 +105,23 @@ C<exists> reports if C<$redis> caches the script.
 
 Load a script into the scripts cache, without executing it.
 
+=head1 SEE ALSO
+
+=over 4
+
+=item *
+
+L<Redis.pm|https://metacpan.org/pod/Redis>
+
+=item *
+
+L<Redis::Fast|https://metacpan.org/pod/Redis::Fast>
+
+=item *
+
+L<Description of EVAL|http://redis.io/commands/eval#bandwidth-and-evalsha>
+
+=back
 
 =head1 LICENSE
 
