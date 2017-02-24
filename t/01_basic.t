@@ -1,5 +1,7 @@
 use strict;
 use warnings;
+use FindBin;
+use lib "$FindBin::RealBin/../";
 use Test::More;
 use Test::RedisServer;
 use Redis::Script qw/redis_eval/;
