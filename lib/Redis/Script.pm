@@ -32,7 +32,12 @@ sub eval {
         }
     }
 
-    my $ret = $redis->eval($self->{script}, scalar(@$keys), @$keys, @$args);
+    my $ret = eval {
+        $redis->eval($self->{script}, scalar(@$keys), @$keys, @$args);
+    };
+    if (my $err = $@) {
+        croak $@;
+    }
 
     return (wantarray && ref $ret eq 'ARRAY') ? @$ret : $ret;
 }
