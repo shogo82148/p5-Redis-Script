@@ -1,6 +1,8 @@
 Revision history for Perl extension Redis-Script
 
 {{$NEXT}}
+    - croak errors intead of die
+    - fix brokent test in newer perl
 
 0.01 2016-03-13T01:10:34Z
 
