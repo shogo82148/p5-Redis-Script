@@ -5,7 +5,7 @@ use warnings;
 use Exporter 'import';
 our @EXPORT_OK = ('redis_eval');
 
-our $VERSION = "0.01";
+our $VERSION = "0.02";
 
 use Digest::SHA qw(sha1_hex);
 use Carp qw/croak/;
