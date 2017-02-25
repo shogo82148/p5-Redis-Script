@@ -8,6 +8,7 @@ our @EXPORT_OK = ('redis_eval');
 our $VERSION = "0.01";
 
 use Digest::SHA qw(sha1_hex);
+use Carp qw/croak/;
 
 sub new {
     my ($class, %args) = @_;
@@ -25,13 +26,18 @@ sub eval {
         my $sha = $self->sha1;
         my $ret = eval { $redis->evalsha($sha, scalar(@$keys), @$keys, @$args) };
         if (my $err = $@) {
-            die $err if $err !~ /\[evalsha\] NOSCRIPT No matching script/i;
+            croak $err if $err !~ /\[evalsha\] NOSCRIPT No matching script/i;
         } else {
             return (wantarray && ref $ret eq 'ARRAY') ? @$ret : $ret;
         }
     }
 
-    my $ret = $redis->eval($self->{script}, scalar(@$keys), @$keys, @$args);
+    my $ret = eval {
+        $redis->eval($self->{script}, scalar(@$keys), @$keys, @$args);
+    };
+    if (my $err = $@) {
+        croak $@;
+    }
 
     return (wantarray && ref $ret eq 'ARRAY') ? @$ret : $ret;
 }
@@ -46,7 +52,7 @@ sub load {
     my $sha = $self->sha1;
     my $redis_sha = $redis->script_load($self->{script});
     if (lc $sha ne lc $redis_sha) {
-        die "SHA is unmatch (expected $sha but redis returns $redis_sha)";
+        croak "SHA is unmatch (expected $sha but redis returns $redis_sha)";
     }
     return $sha;
 }
