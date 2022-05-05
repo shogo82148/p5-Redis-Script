@@ -1,6 +1,7 @@
 Revision history for Perl extension Redis-Script
 
 {{$NEXT}}
+    - migrate to GitHub Actions from TravisCI
 
 0.02 2017-02-25T00:44:51Z
     - croak errors intead of die
