@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/shogo82148/p5-Redis-Script.svg?branch=master)](https://travis-ci.org/shogo82148/p5-Redis-Script)
+[![Actions Status](https://github.com/shogo82148/p5-Redis-Script/actions/workflows/test.yml/badge.svg)](https://github.com/shogo82148/p5-Redis-Script/actions) [![MetaCPAN Release](https://badge.fury.io/pl/Redis-Script.svg)](https://metacpan.org/release/Redis-Script)
 # NAME
 
 Redis::Script - wrapper class for Redis' script
@@ -45,11 +45,11 @@ Load a script into the scripts cache, without executing it.
 
 # LICENSE
 
-Copyright (C) Ichinose Shogo.
+Copyright (C) ICHINOSE Shogo.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 # AUTHOR
 
-Ichinose Shogo <shogo82148@gmail.com>
+ICHINOSE Shogo <shogo82148@gmail.com>
