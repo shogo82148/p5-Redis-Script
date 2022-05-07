@@ -1,107 +1,97 @@
-name: "Test"
+name: "test"
 on:
   pull_request:
   push:
-    branches:
-    - 'main'
+  workflow_dispatch:
 
 jobs:
-  test-redis:
+  list:
     runs-on: ubuntu-latest
-    env:
-      REDIS_BACKEND: Redis
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: list
+        id: set-matrix
+        run: |
+          import json
+          perl = [
+              '5.34',
+              '5.32',
+              '5.30',
+              '5.28',
+              '5.26',
+              '5.24',
+              '5.22',
+              '5.20',
+              '5.18',
+              '5.16',
+              '5.14',
+              '5.12',
+              '5.10'
+          ]
+          redis = [
+              '6.2',
+              '6.0',
+              '5.0',
+              '4.0',
+              '3.2',
+              '3.0',
+              '2.8',
+          ]
+          backend = [
+              'Redis',
+              'Redis::Fast',
+          ]
+          includes = []
+          for r in redis:
+              for b in backend:
+                  includes.append({
+                      'perl': perl[0],
+                      'redis': r,
+                      'os': 'macos-latest',
+                      'backend': b,
+                  })
+          matrix = {
+              'perl': perl,
+              'redis': redis,
+              'os': ['ubuntu-latest'],
+              'backend': backend,
+              'include': includes
+          }
+          output = json.dumps(matrix, separators=(',', ':'))
+          print('::set-output name=matrix::{0}'.format(output))
+        shell: python
+
+  test:
+    runs-on: ${{ matrix.os }}
+    needs: list
+
     strategy:
       fail-fast: false
-      matrix:
-        perl:
-          - "5.30"
-          - "5.28"
-          - "5.26"
-          - "5.24"
-          - "5.22"
-          - "5.20"
-          - "5.18"
-          - "5.16"
-          - "5.14"
-          - "5.12"
-          - "5.10"
-        redis:
-          - "6.0"
-          - "5.0"
-          - "4.0"
-          - "3.2"
-          - "3.0"
-          - "2.8"
+      matrix: ${{ fromJSON(needs.list.outputs.matrix) }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
       - name: Set up Perl ${{ matrix.perl }}
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
-
+          install-modules-with: cpm
+          install-modules-args: --with-develop
+          install-modules: |
+            Minilla
+            Redis
+            Redis::Fast
       - name: Set up Redis ${{ matrix.redis }}
         uses: shogo82148/actions-setup-redis@v1
         with:
           redis-version: ${{ matrix.redis }}
           auto-start: false
 
-      - name: Install
+      - name: Test
         run: |
-          cpanm --quiet --installdeps --notest .
-          cpanm --quiet --notest "$REDIS_BACKEND"
-          perl Build.PL
-          ./Build
-      - run: prove -lv t
-
-  test-redis-fast:
-    runs-on: ubuntu-latest
-    env:
-      REDIS_BACKEND: Redis::Fast
-    strategy:
-      fail-fast: false
-      matrix:
-        perl:
-          - "5.30"
-          - "5.28"
-          - "5.26"
-          - "5.24"
-          - "5.22"
-          - "5.20"
-          - "5.18"
-          - "5.16"
-          - "5.14"
-          - "5.12"
-          - "5.10"
-        redis:
-          - "6.0"
-          - "5.0"
-          - "4.0"
-          - "3.2"
-          - "3.0"
-          - "2.8"
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-
-      - name: Set up Perl ${{ matrix.perl }}
-        uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: ${{ matrix.perl }}
-
-      - name: Set up Redis ${{ matrix.redis }}
-        uses: shogo82148/actions-setup-redis@v1
-        with:
-          redis-version: ${{ matrix.redis }}
-          auto-start: false
-
-      - name: Install
-        run: |
-          cpanm --quiet --installdeps --notest .
-          cpanm --quiet --notest "$REDIS_BACKEND"
-          perl Build.PL
-          ./Build
-      - run: prove -lv t
+          minil test
+        env:
+          REDIS_BACKEND: ${{ matrix.backend }}
