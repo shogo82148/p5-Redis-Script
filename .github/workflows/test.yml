@@ -33,6 +33,13 @@ jobs:
               '7.4',
               '7.2',
               '6.2',
+
+              # Valkey versions
+              'valkey-9.1',
+              'valkey-9.0',
+              'valkey-8.1',
+              'valkey-8.0',
+              'valkey-7.2',
           ]
           backend = [
               'Redis',
