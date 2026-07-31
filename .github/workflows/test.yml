@@ -76,20 +76,20 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Perl ${{ matrix.perl }}
-        uses: shogo82148/actions-setup-perl@v1
+        uses: shogo82148/actions-setup-perl@3d3cb73ca65d657a809d97eab324d4e4f140bf5e # v1.42.0
         with:
           perl-version: ${{ matrix.perl }}
-          install-modules-with: cpm
+          install-modules-with: cpanm
           install-modules-args: --with-develop
           install-modules: |
             Minilla
             Redis
             Redis::Fast
       - name: Set up Redis ${{ matrix.redis }}
-        uses: shogo82148/actions-setup-redis@v1.55.0
+        uses: shogo82148/actions-setup-redis@59cda539fd5cc9be4c42bb07e4b28156951f37d6 # v1.55.0
         with:
           redis-version: ${{ matrix.redis }}
           auto-start: false
