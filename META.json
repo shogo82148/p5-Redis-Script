@@ -4,7 +4,7 @@
       "ICHINOSE Shogo <shogo82148@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v3.1.16, CPAN::Meta::Converter version 2.150010",
+   "generated_by" : "Minilla/v3.1.29, CPAN::Meta::Converter version 2.150013",
    "license" : [
       "perl_5"
    ],
@@ -43,7 +43,7 @@
       "runtime" : {
          "requires" : {
             "Digest::SHA" : "0",
-            "perl" : "5.008005"
+            "perl" : "5.024000"
          }
       },
       "test" : {
@@ -67,6 +67,9 @@
       }
    },
    "version" : "0.02",
-   "x_serialization_backend" : "JSON::PP version 4.06",
+   "x_contributors" : [
+      "dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 4.16",
    "x_static_install" : 1
 }

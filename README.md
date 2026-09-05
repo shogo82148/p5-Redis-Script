@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/shogo82148/p5-Redis-Script/actions/workflows/test.yml/badge.svg)](https://github.com/shogo82148/p5-Redis-Script/actions) [![MetaCPAN Release](https://badge.fury.io/pl/Redis-Script.svg)](https://metacpan.org/release/Redis-Script)
+[![Actions Status](https://github.com/shogo82148/p5-Redis-Script/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/shogo82148/p5-Redis-Script/actions?workflow=test) [![MetaCPAN Release](https://badge.fury.io/pl/Redis-Script.svg)](https://metacpan.org/release/Redis-Script)
 # NAME
 
 Redis::Script - wrapper class for Redis' script
