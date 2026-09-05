@@ -1,4 +1,4 @@
-requires 'perl', '5.008001';
+requires 'perl', '5.024000';
 requires 'Digest::SHA';
 
 on 'test' => sub {

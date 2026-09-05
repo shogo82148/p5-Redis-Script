@@ -6,7 +6,7 @@ on:
 
 jobs:
   list:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -16,24 +16,12 @@ jobs:
           import json
           import os
           perl = [
+              # the latest supported version
               '5.44',
               '5.42',
-              '5.40',
-              '5.38',
-              '5.36',
-              '5.34',
-              '5.32',
-              '5.30',
-              '5.28',
-              '5.26',
-              '5.24',
-              '5.22',
-              '5.20',
-              '5.18',
-              '5.16',
-              '5.14',
-              '5.12',
-              '5.10'
+
+              # the oldest supported version
+              '5.24'
           ]
           redis = [
               '8.10',
@@ -44,14 +32,14 @@ jobs:
               '8.0',
               '7.4',
               '7.2',
-              '7.0',
               '6.2',
-              '6.0',
-              '5.0',
-              '4.0',
-              '3.2',
-              '3.0',
-              '2.8',
+
+              # Valkey versions
+              'valkey-9.1',
+              'valkey-9.0',
+              'valkey-8.1',
+              'valkey-8.0',
+              'valkey-7.2',
           ]
           backend = [
               'Redis',
@@ -59,13 +47,12 @@ jobs:
           ]
           includes = []
           for r in redis:
-              for b in backend:
-                  includes.append({
-                      'perl': perl[0],
-                      'redis': r,
-                      'os': 'macos-latest',
-                      'backend': b,
-                  })
+              includes.append({
+                  'perl': perl[0],
+                  'redis': r,
+                  'os': 'macos-latest',
+                  'backend': 'Redis',
+              })
           matrix = {
               'perl': perl,
               'redis': redis,
@@ -94,12 +81,11 @@ jobs:
         uses: shogo82148/actions-setup-perl@53e33bb27be492a926eee378e8a5f7ff6618b061 # v1.43.1
         with:
           perl-version: ${{ matrix.perl }}
-          install-modules-with: cpanm
+          install-modules-with: cpm
           install-modules-args: --with-develop
           install-modules: |
             Minilla
-            Redis
-            Redis::Fast
+            ${{ matrix.backend }}
       - name: Set up Redis ${{ matrix.redis }}
         uses: shogo82148/actions-setup-redis@88a1fb308aae95aa485bf3da667c9d6e61be4c53 # v1.58.0
         with:
