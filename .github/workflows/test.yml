@@ -47,13 +47,12 @@ jobs:
           ]
           includes = []
           for r in redis:
-              for b in backend:
-                  includes.append({
-                      'perl': perl[0],
-                      'redis': r,
-                      'os': 'macos-latest',
-                      'backend': b,
-                  })
+              includes.append({
+                  'perl': perl[0],
+                  'redis': r,
+                  'os': 'macos-latest',
+                  'backend': 'Redis',
+              })
           matrix = {
               'perl': perl,
               'redis': redis,
@@ -86,8 +85,7 @@ jobs:
           install-modules-args: --with-develop
           install-modules: |
             Minilla
-            Redis
-            Redis::Fast
+            ${{ matrix.backend }}
       - name: Set up Redis ${{ matrix.redis }}
         uses: shogo82148/actions-setup-redis@88a1fb308aae95aa485bf3da667c9d6e61be4c53 # v1.58.0
         with:
