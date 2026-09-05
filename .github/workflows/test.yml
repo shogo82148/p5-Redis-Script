@@ -79,7 +79,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Perl ${{ matrix.perl }}
-        uses: shogo82148/actions-setup-perl@3d3cb73ca65d657a809d97eab324d4e4f140bf5e # v1.42.0
+        uses: shogo82148/actions-setup-perl@53e33bb27be492a926eee378e8a5f7ff6618b061 # v1.43.1
         with:
           perl-version: ${{ matrix.perl }}
           install-modules-with: cpm
@@ -89,7 +89,7 @@ jobs:
             Redis
             Redis::Fast
       - name: Set up Redis ${{ matrix.redis }}
-        uses: shogo82148/actions-setup-redis@3e38d435ea02619c76909c929ecc501806c7145e # v1.56.0
+        uses: shogo82148/actions-setup-redis@88a1fb308aae95aa485bf3da667c9d6e61be4c53 # v1.58.0
         with:
           redis-version: ${{ matrix.redis }}
           auto-start: false
